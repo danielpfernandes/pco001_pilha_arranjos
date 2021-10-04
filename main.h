@@ -9,6 +9,7 @@
 
 #include <iostream>
 #include <cstring>
+#include <vector>
 
 using namespace std;
 
@@ -17,164 +18,164 @@ typedef struct
     string chave;
 } TipoItem;
 
-typedef struct TipoLista
+typedef struct TipoPilha
 {
     TipoItem item[TAMANHO_MAXIMO];
-    int primeiro{}, ultimo{};
-} TipoPilhaArranjos;
+    int topo;
+} TipoPilha;
 
-bool isCheia(const TipoPilhaArranjos *lista) { return lista->ultimo == TAMANHO_MAXIMO; }
+bool isCheia(const TipoPilha *pilha) {
+    if (pilha->topo == TAMANHO_MAXIMO) {
+        cout << "ERRO! Pilha está cheia" << endl;
+        return true;
+    }
+    return false;
+}
 
-bool isVazia(const TipoPilhaArranjos *lista) { return lista->primeiro == lista->ultimo; }
-
-void imprimePilha(TipoPilhaArranjos *lista)
+bool isVazia(const TipoPilha *pilha)
 {
-    cout << "Lista -> ";
-    for (int i = 0; i < lista->ultimo; i++)
+    if (pilha->topo == -1)
     {
-        cout << to_string(i+1) + ") " + lista->item[i].chave;
-        if (i + 1 < lista->ultimo)
-        {
-            cout << ", ";
-        }
+        cout << "ERRO! Pilha está vazia" << endl;
+        return true;
+    }
+    return false;
+}
+
+void imprimePilha(TipoPilha *pilha)
+{
+    cout << "Pilha: " << endl;
+    for (int i = 0; i <= pilha->topo; i++)
+    {
+        cout << to_string(i+1) + ") " + pilha->item[i].chave << endl;
     }
     cout << endl;
 }
 
-void inicializaPilha(TipoPilhaArranjos* lista)
+void inicializaPilha(TipoPilha* pilha)
 {
-    lista->primeiro = INICIO_ARRANJO;
-    lista->ultimo = lista->primeiro;
+    pilha->topo = -1;
 }
 
-void insereValor(string item, TipoPilhaArranjos* lista)
+void empilhar(string item, TipoPilha* pilha)
 {
-    int posicao;
-
-    if(isCheia(lista))
-    {
-        cout << "ERRO! Lista está cheia" << endl;
-        return;
-    }
-    if(lista->ultimo < posicao)
-    {
-        lista->ultimo = posicao;
-    }
-    lista->item[posicao - 1].chave = std::move(item);
+    if(isCheia(pilha)) return;
+    pilha->topo++;
+    pilha->item[pilha->topo].chave = item;
 }
 
-void retiraPrimeiroItem(TipoPilhaArranjos* lista)
+void desempilhar(TipoPilha* pilha)
 {
-    if (isVazia(lista))
-    {
-        cout << "ERRO! Lista está vazia" << endl;
-        return;
-    }
-    for (int i = 0; i < lista->ultimo; i++)
-    {
-        lista->item[i] = lista->item[i+1];
-    }
-    lista->ultimo--;
+    if (isVazia(pilha)) return;
+    pilha->item[pilha->topo].chave = "";
+    pilha->topo--;
 }
 
-void retira(TipoPilhaArranjos* lista, int posicao)
-{
-    if(isVazia(lista) || posicao - 1 > lista->ultimo)
+void descarregaPilhaAuxiliarNaPilha(TipoPilha *pilhaAux, TipoPilha *pilha) {
+    for (int j = pilhaAux->topo; j >= 0; j--)
     {
-        cout << "ERRO! Lista está vazia ou índice fora do limite" << endl;
-        return;
-    }
-    for(int i = posicao-1; i < lista->ultimo; i++)
-    {
-        lista->item[i] = lista->item[i+1];
-    }
-    lista->ultimo--;
-}
-
-void buscarValor(const TipoPilhaArranjos& lista, const string& valorBuscado)
-{
-    for (int i = lista.primeiro; i <= lista.ultimo; i++)
-    {
-        if(strcmp(lista.item[i - 1].chave.c_str(), valorBuscado.c_str()) == 0)
-        {
-            cout << "Valor " + valorBuscado + " encontrado na posição " + to_string(i) << endl;
-            return;
-        }
-    }
-    cout << "ERRO! Valor " + valorBuscado + " não encontrado" << endl;
-}
-
-void concatenarPilha(const TipoPilhaArranjos& primeiraLista, const TipoPilhaArranjos& segundaLista, TipoPilhaArranjos* novaLista)
-{
-    int posicao = 1;
-    if (primeiraLista.ultimo + segundaLista.ultimo > TAMANHO_MAXIMO)
-    {
-        cout << "ERRO! O tamanho das duas lista é maior do que a nova lista" << endl;
-    }
-    for (int i = primeiraLista.primeiro; i <= primeiraLista.ultimo; i++)
-    {
-        insereValor(primeiraLista.item[i-1].chave, novaLista);
-        posicao++;
-    }
-    for (int j = segundaLista.primeiro; j <= segundaLista.ultimo; j ++)
-    {
-        insereValor(segundaLista.item[j-1].chave,  novaLista);
-        posicao++;
+        empilhar(pilhaAux->item[j].chave, pilha);
+        desempilhar(pilhaAux);
     }
 }
 
-void dividirListas(TipoPilhaArranjos& listaOriginal, TipoPilhaArranjos* novaListaEsquerda, TipoPilhaArranjos* novaListaDireita)
-{
-    int posicao = 1;
-    int meio = listaOriginal.ultimo/2;
-    for(int i = listaOriginal.primeiro - 1; i < listaOriginal.ultimo; i++)
+TipoPilha *carregaPilhaAuxiliarAtePosicao(int posicao, TipoPilha *pilha, TipoPilha* pilhaAux) {
+    for (int i = 0; i <= posicao; i ++)
     {
-        if(i < meio)
-        {
-            insereValor(listaOriginal.item[i].chave, novaListaEsquerda);
-        }
-        else
-        {
-            insereValor(listaOriginal.item[i].chave, novaListaDireita);
-            posicao++;
-        }
+        empilhar(pilha->item[i].chave, pilhaAux);
+        desempilhar(pilha);
     }
+    return pilhaAux;
 }
 
-void copiarLista(TipoPilhaArranjos& listaOriginal, TipoPilhaArranjos* novaLista)
-{
-    for(int i = listaOriginal.primeiro; i <= listaOriginal.ultimo; i++)
-    {
-        insereValor(listaOriginal.item[i-1].chave , novaLista);
-    }
+TipoPilha *carregaPilhaAuxiliarAtePosicao(int posicao, TipoPilha *pilha) {
+    TipoPilha pilhaAux;
+    inicializaPilha(&pilhaAux);
+    return carregaPilhaAuxiliarAtePosicao(posicao, pilha, &pilhaAux);
 }
-void ordenaLista(TipoPilhaArranjos* lista)
+
+void insereItemAposPosicao(string item, int posicao, TipoPilha* pilha)
 {
-    string temp;
-    for(int j = 0; j<lista->ultimo-1; j++)
-    {
-        for(int i = 0; i < lista->ultimo-1; i++)
-        {
-            if(lista->item[i].chave.compare(lista->item[i+1].chave) > 0)
-            {
-                temp = lista->item[i].chave;
-                lista->item[i].chave = lista->item[i+1].chave;
-                lista->item[i+1].chave = temp;
-            }
-        }
-    }
+    if (isCheia(pilha)) return;
+    TipoPilha* pilhaAux = carregaPilhaAuxiliarAtePosicao(posicao, pilha);
+    int topoAux = pilhaAux->topo;
+    empilhar(item, pilha);
+    pilhaAux->topo = topoAux;
+    descarregaPilhaAuxiliarNaPilha(pilhaAux, pilha);
 }
-void buscarOcorrenciaDeValor(TipoPilhaArranjos& lista, const string& valorBuscado)
+
+void retira(TipoPilha* pilha, int posicao)
 {
+    if(isVazia(pilha)) return;
+    auto *pilhaAux = carregaPilhaAuxiliarAtePosicao(posicao, pilha);
+    descarregaPilhaAuxiliarNaPilha(pilhaAux, pilha);
+}
+
+void localizaItemPosicao(int posicao, TipoPilha* pilha)
+{
+    if(isVazia(pilha)) return;
+    char *shouldChange = nullptr;
+    auto* pilhaAux = carregaPilhaAuxiliarAtePosicao(posicao, pilha);
+    cout << "O valor na posição " + to_string(posicao) + " é " + pilha->item[pilha->topo].chave;
+    cout << "Deseja alterar o valor (s/n)?" << endl;
+    cin >> *shouldChange;
+    if (shouldChange == "s")
+    {
+        string novoValor;
+        cout << "Entre com o novo valor: ";
+        cin >> novoValor;
+        desempilhar(pilha);
+        empilhar(novoValor, pilha);
+    }
+    descarregaPilhaAuxiliarNaPilha(pilhaAux, pilha);
+}
+
+TipoPilha combinarPilhas(TipoPilha* pilhaUm, TipoPilha* pilhaDois)
+{
+    int tamanhoNovo = pilhaUm->topo + pilhaDois->topo;
+    if (tamanhoNovo > TAMANHO_MAXIMO)
+    {
+        cout << "ERRO! As combinação das pilhas excede o tamanho máximo!" << endl;
+    }
+    TipoPilha* novaPilha = carregaPilhaAuxiliarAtePosicao(pilhaUm->topo, pilhaUm);
+    return *carregaPilhaAuxiliarAtePosicao(pilhaDois->topo, pilhaDois, novaPilha);
+}
+
+TipoPilha* dividirPilha(TipoPilha* original, int posicao)
+{
+    if(isVazia(original)) return nullptr;
+    return carregaPilhaAuxiliarAtePosicao(posicao, original);
+}
+
+TipoPilha copiarPilha(TipoPilha* original)
+{
+    TipoPilha* pilhaAux = carregaPilhaAuxiliarAtePosicao(original->topo, original);
+    auto* copia = new TipoPilha;
+    for (int i = pilhaAux->topo; i > 0; i--)
+    {
+        empilhar(pilhaAux->item[i].chave, original);
+        empilhar(pilhaAux->item[i].chave, copia);
+        desempilhar(pilhaAux);
+    }
+    return *copia;
+}
+
+void localizaItemPosicao(TipoPilha* pilha, const string& valorBuscado)
+{
+    if(isVazia(pilha)) return;
     int ocorrencia = 0;
+    vector<int> posicao;
     bool isPresent = false;
-    for (int i = lista.primeiro; i <= lista.ultimo; i++)
+    TipoPilha copia = copiarPilha(pilha);
+    while(copia.topo != -1)
     {
-        if(strcmp(lista.item[i - 1].chave.c_str(), valorBuscado.c_str()) == 0)
+        if(copia.item[copia.topo].chave == valorBuscado)
         {
             ocorrencia++;
+            posicao.push_back(pilha->topo);
             isPresent = true;
         }
+        desempilhar(&copia);
     }
     if (isPresent)
     {
