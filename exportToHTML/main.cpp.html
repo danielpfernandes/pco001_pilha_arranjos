@@ -1,0 +1,101 @@
+<html>
+<head>
+<title>main.cpp</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #808080;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #bbb529;}
+.s3 { color: #6a8759;}
+.s4 { color: #cc7832;}
+.s5 { color: #6897bb;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+main.cpp</font>
+</center></td></tr></table>
+<pre><span class="s0">//</span>
+<span class="s0">// Created by Daniel Paiva Fernandes on 23/09/2021.</span>
+<span class="s0">//</span>
+<span class="s2">#include </span><span class="s3">&quot;main.h&quot;</span>
+
+<span class="s4">int </span><span class="s1">main()</span>
+<span class="s1">{</span>
+    <span class="s1">TipoPilha primeiraPilha</span><span class="s4">;</span>
+    <span class="s1">TipoPilha segundaPilha</span><span class="s4">;</span>
+
+    <span class="s1">cout &lt;&lt; </span><span class="s3">&quot;01. Criação da estrutura de dados vazia&quot; </span><span class="s1">&lt;&lt; endl</span><span class="s4">;</span>
+    <span class="s1">inicializaPilha(&amp;primeiraPilha)</span><span class="s4">;</span>
+    <span class="s1">inicializaPilha(&amp;segundaPilha)</span><span class="s4">;</span>
+    <span class="s1">imprimePilha(&amp;primeiraPilha)</span><span class="s4">;</span>
+    <span class="s1">imprimePilha(&amp;segundaPilha)</span><span class="s4">;</span>
+
+    <span class="s1">cout &lt;&lt; endl &lt;&lt; </span><span class="s3">&quot;02. Empilhar&quot; </span><span class="s1">&lt;&lt; endl</span><span class="s4">;</span>
+    <span class="s1">empilhar(</span><span class="s3">&quot;banana&quot;</span><span class="s4">, </span><span class="s1">&amp;primeiraPilha)</span><span class="s4">;</span>
+    <span class="s1">empilhar(</span><span class="s3">&quot;laranja&quot;</span><span class="s4">, </span><span class="s1">&amp;primeiraPilha)</span><span class="s4">;</span>
+    <span class="s1">empilhar(</span><span class="s3">&quot;manga&quot;</span><span class="s4">, </span><span class="s1">&amp;primeiraPilha)</span><span class="s4">;</span>
+    <span class="s1">empilhar(</span><span class="s3">&quot;morango&quot;</span><span class="s4">, </span><span class="s1">&amp;primeiraPilha)</span><span class="s4">;</span>
+    <span class="s1">empilhar(</span><span class="s3">&quot;uva&quot;</span><span class="s4">, </span><span class="s1">&amp;primeiraPilha)</span><span class="s4">;</span>
+    <span class="s1">empilhar(</span><span class="s3">&quot;batata&quot;</span><span class="s4">, </span><span class="s1">&amp;segundaPilha)</span><span class="s4">;</span>
+    <span class="s1">empilhar(</span><span class="s3">&quot;cebola&quot;</span><span class="s4">, </span><span class="s1">&amp;segundaPilha)</span><span class="s4">;</span>
+    <span class="s1">empilhar(</span><span class="s3">&quot;vagem&quot;</span><span class="s4">, </span><span class="s1">&amp;segundaPilha)</span><span class="s4">;</span>
+    <span class="s1">empilhar(</span><span class="s3">&quot;cenoura&quot;</span><span class="s4">, </span><span class="s1">&amp;segundaPilha)</span><span class="s4">;</span>
+    <span class="s1">empilhar(</span><span class="s3">&quot;beterraba&quot;</span><span class="s4">, </span><span class="s1">&amp;segundaPilha)</span><span class="s4">;</span>
+    <span class="s1">empilhar(</span><span class="s3">&quot;tomate&quot;</span><span class="s4">, </span><span class="s1">&amp;segundaPilha)</span><span class="s4">;</span>
+    <span class="s1">imprimePilha(&amp;primeiraPilha)</span><span class="s4">;</span>
+    <span class="s1">imprimePilha(&amp;segundaPilha)</span><span class="s4">;</span>
+
+    <span class="s1">cout &lt;&lt; endl &lt;&lt;  </span><span class="s3">&quot;03. Desempilhar&quot; </span><span class="s1">&lt;&lt; endl</span><span class="s4">;</span>
+    <span class="s1">desempilhar(&amp;primeiraPilha)</span><span class="s4">;</span>
+    <span class="s1">desempilhar(&amp;segundaPilha)</span><span class="s4">;</span>
+    <span class="s1">imprimePilha(&amp;primeiraPilha)</span><span class="s4">;</span>
+    <span class="s1">imprimePilha(&amp;segundaPilha)</span><span class="s4">;</span>
+
+    <span class="s1">cout &lt;&lt; endl &lt;&lt; </span><span class="s3">&quot;04. Inserir um novo item após o i-ésimo item&quot; </span><span class="s1">&lt;&lt; endl</span><span class="s4">;</span>
+    <span class="s1">insereItemAposPosicao(</span><span class="s3">&quot;goiaba&quot;</span><span class="s4">, </span><span class="s5">2</span><span class="s4">, </span><span class="s1">&amp;primeiraPilha)</span><span class="s4">;</span>
+    <span class="s1">insereItemAposPosicao(</span><span class="s3">&quot;jiló&quot;</span><span class="s4">, </span><span class="s5">3</span><span class="s4">, </span><span class="s1">&amp;segundaPilha)</span><span class="s4">;</span>
+    <span class="s1">imprimePilha(&amp;primeiraPilha)</span><span class="s4">;</span>
+    <span class="s1">imprimePilha(&amp;segundaPilha)</span><span class="s4">;</span>
+
+    <span class="s1">cout &lt;&lt; endl &lt;&lt;  </span><span class="s3">&quot;05. Retirar i-ésimo item&quot; </span><span class="s1">&lt;&lt; endl</span><span class="s4">;</span>
+    <span class="s1">retira(&amp;segundaPilha</span><span class="s4">, </span><span class="s5">2</span><span class="s1">)</span><span class="s4">;</span>
+    <span class="s1">imprimePilha(&amp;segundaPilha)</span><span class="s4">;</span>
+
+    <span class="s1">cout &lt;&lt; endl &lt;&lt;  </span><span class="s3">&quot;06. Localizar um item na Lista&quot; </span><span class="s1">&lt;&lt; endl</span><span class="s4">;</span>
+    <span class="s1">localizaItemPosicao(</span><span class="s5">1</span><span class="s4">, </span><span class="s1">&amp;primeiraPilha)</span><span class="s4">;</span>
+    <span class="s1">localizaItemPosicao(</span><span class="s5">3</span><span class="s4">, </span><span class="s1">&amp;primeiraPilha)</span><span class="s4">;</span>
+    <span class="s1">localizaItemPosicao(</span><span class="s5">0</span><span class="s4">, </span><span class="s1">&amp;segundaPilha)</span><span class="s4">;</span>
+    <span class="s1">localizaItemPosicao(</span><span class="s5">3</span><span class="s4">, </span><span class="s1">&amp;segundaPilha)</span><span class="s4">;</span>
+    <span class="s1">imprimePilha(&amp;primeiraPilha)</span><span class="s4">;</span>
+    <span class="s1">imprimePilha(&amp;segundaPilha)</span><span class="s4">;</span>
+
+    <span class="s1">cout &lt;&lt; endl &lt;&lt; </span><span class="s3">&quot;07. Combinar duas ou mais estruturas em uma&quot; </span><span class="s1">&lt;&lt; endl</span><span class="s4">;</span>
+    <span class="s1">TipoPilha novaPilha</span><span class="s4">;</span>
+    <span class="s1">inicializaPilha(&amp;novaPilha)</span><span class="s4">;</span>
+    <span class="s1">novaPilha = combinarPilhas(&amp;segundaPilha</span><span class="s4">, </span><span class="s1">&amp;primeiraPilha)</span><span class="s4">;</span>
+    <span class="s1">imprimePilha(&amp;novaPilha)</span><span class="s4">;</span>
+
+    <span class="s1">cout &lt;&lt; endl &lt;&lt; </span><span class="s3">&quot;08. Partir uma estrutura em duas ou mais&quot; </span><span class="s1">&lt;&lt; endl</span><span class="s4">;</span>
+    <span class="s1">TipoPilha novaPilhaDireita</span><span class="s4">;</span>
+    <span class="s1">inicializaPilha(&amp;novaPilhaDireita)</span><span class="s4">;</span>
+    <span class="s1">novaPilhaDireita = dividirPilha(&amp;novaPilha</span><span class="s4">, </span><span class="s5">3</span><span class="s1">)</span><span class="s4">;</span>
+    <span class="s1">imprimePilha(&amp;novaPilha)</span><span class="s4">;</span>
+    <span class="s1">imprimePilha(&amp;novaPilhaDireita)</span><span class="s4">;</span>
+
+    <span class="s1">cout &lt;&lt; endl &lt;&lt; </span><span class="s3">&quot;09. Fazer uma cópia&quot; </span><span class="s1">&lt;&lt; endl</span><span class="s4">;</span>
+    <span class="s1">TipoPilha pilhaCopiada</span><span class="s4">;</span>
+    <span class="s1">inicializaPilha(&amp;pilhaCopiada)</span><span class="s4">;</span>
+    <span class="s1">pilhaCopiada = copiarPilha(&amp;novaPilhaDireita)</span><span class="s4">;</span>
+    <span class="s1">imprimePilha(&amp;pilhaCopiada)</span><span class="s4">;</span>
+
+    <span class="s1">cout &lt;&lt; endl &lt;&lt; </span><span class="s3">&quot;10. Buscar a ocorrência de um valor particular&quot; </span><span class="s1">&lt;&lt; endl</span><span class="s4">;</span>
+    <span class="s1">empilhar(</span><span class="s3">&quot;laranja&quot;</span><span class="s4">, </span><span class="s1">&amp;pilhaCopiada)</span><span class="s4">;</span>
+    <span class="s1">imprimePilha(&amp;pilhaCopiada)</span><span class="s4">;</span>
+    <span class="s1">localizaItemPosicao(&amp;pilhaCopiada</span><span class="s4">, </span><span class="s3">&quot;laranja&quot;</span><span class="s1">)</span><span class="s4">;</span>
+<span class="s1">}</span>
+</pre>
+</body>
+</html>
