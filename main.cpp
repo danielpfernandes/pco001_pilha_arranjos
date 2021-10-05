@@ -41,40 +41,39 @@ int main()
     imprimePilha(&primeiraPilha);
     imprimePilha(&segundaPilha);
 
-    /*
-    cout << endl <<  "05. Localizar um item na Lista" << endl;
-    localizaItemPosicao(*primeiraPilha, "banana");
-    localizaItemPosicao(*primeiraPilha, "laranja");
-    localizaItemPosicao(*segundaPilha, "tomate");
-    localizaItemPosicao(*segundaPilha, "cenoura");
+    cout << endl <<  "05. Retirar i-ésimo item" << endl;
+    retira(&segundaPilha, 2);
+    imprimePilha(&segundaPilha);
 
-    cout << endl << "06. Combinar duas ou mais estruturas em uma" << endl;
-    auto *novaLista = new TipoPilha;
-    inicializaPilha(novaLista);
-    combinarPilhas(*segundaPilha, *primeiraPilha, novaLista);
-    imprimePilha(novaLista);
+    cout << endl <<  "06. Localizar um item na Lista" << endl;
+    localizaItemPosicao(1, &primeiraPilha);
+    localizaItemPosicao(3, &primeiraPilha);
+    localizaItemPosicao(0, &segundaPilha);
+    localizaItemPosicao(3, &segundaPilha);
+    imprimePilha(&primeiraPilha);
+    imprimePilha(&segundaPilha);
 
-    cout << endl << "07. Partir uma estrutura em duas ou mais" << endl;
-    auto *novaPilhaEsquerda = new TipoPilha;
-    auto *novaPilhaDireita = new TipoPilha;
-    inicializaPilha(novaPilhaEsquerda);
-    inicializaPilha(novaPilhaDireita);
-    dividirPilha(*novaLista, novaPilhaEsquerda, novaPilhaDireita);
-    imprimePilha(novaPilhaEsquerda);
-    imprimePilha(novaPilhaDireita);
+    cout << endl << "07. Combinar duas ou mais estruturas em uma" << endl;
+    TipoPilha novaPilha;
+    inicializaPilha(&novaPilha);
+    novaPilha = combinarPilhas(&segundaPilha, &primeiraPilha);
+    imprimePilha(&novaPilha);
 
-    cout << endl << "08. Fazer uma cópia" << endl;
-    auto *listaCopiada = new TipoPilha;
-    inicializaPilha(listaCopiada);
-    copiarPilha(*novaPilhaEsquerda, listaCopiada);
-    imprimePilha(listaCopiada);
+    cout << endl << "08. Partir uma estrutura em duas ou mais" << endl;
+    TipoPilha novaPilhaDireita;
+    inicializaPilha(&novaPilhaDireita);
+    novaPilhaDireita = dividirPilha(&novaPilha, 3);
+    imprimePilha(&novaPilha);
+    imprimePilha(&novaPilhaDireita);
 
-    cout << endl << "09. Ordenar os itens da estrutura" << endl;
-    ordenaLista(novaLista);
-    imprimePilha(novaLista);
+    cout << endl << "09. Fazer uma cópia" << endl;
+    TipoPilha pilhaCopiada;
+    inicializaPilha(&pilhaCopiada);
+    pilhaCopiada = copiarPilha(&novaPilhaDireita);
+    imprimePilha(&pilhaCopiada);
 
     cout << endl << "10. Buscar a ocorrência de um valor particular" << endl;
-    empilhar("laranja", novaLista);
-    imprimePilha(novaLista);
-    localizaItemPosicao(*novaLista, "laranja");*/
+    empilhar("laranja", &pilhaCopiada);
+    imprimePilha(&pilhaCopiada);
+    localizaItemPosicao(&pilhaCopiada, "laranja");
 }

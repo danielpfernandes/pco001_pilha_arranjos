@@ -47,7 +47,7 @@ void imprimePilha(TipoPilha *pilha)
     cout << "Pilha: " << endl;
     for (int i = 0; i <= pilha->topo; i++)
     {
-        cout << to_string(i+1) + ") " + pilha->item[i].chave << endl;
+        cout << to_string(i) + ") " + pilha->item[i].chave << endl;
     }
     cout << endl;
 }
@@ -72,7 +72,7 @@ void desempilhar(TipoPilha* pilha)
 }
 
 void descarregaPilhaAuxiliarNaPilha(TipoPilha *pilhaAux, TipoPilha *pilha) {
-    for (int j = pilhaAux->topo; j >= 0; j--)
+    for (int j = pilhaAux->topo; j != -1; j--)
     {
         empilhar(pilhaAux->item[j].chave, pilha);
         desempilhar(pilhaAux);
@@ -80,7 +80,7 @@ void descarregaPilhaAuxiliarNaPilha(TipoPilha *pilhaAux, TipoPilha *pilha) {
 }
 
 TipoPilha *carregaPilhaAuxiliarAtePosicao(int posicao, TipoPilha *pilha, TipoPilha* pilhaAux) {
-    for (int i = 0; i <= posicao; i ++)
+    for (int i = pilha->topo; i >= posicao; i--)
     {
         empilhar(pilha->item[i].chave, pilhaAux);
         desempilhar(pilha);
@@ -107,18 +107,22 @@ void insereItemAposPosicao(string item, int posicao, TipoPilha* pilha)
 void retira(TipoPilha* pilha, int posicao)
 {
     if(isVazia(pilha)) return;
-    auto *pilhaAux = carregaPilhaAuxiliarAtePosicao(posicao, pilha);
+    TipoPilha *pilhaAux = carregaPilhaAuxiliarAtePosicao(posicao+1, pilha);
+    int topoAux = pilhaAux->topo;
+    desempilhar(pilha);
+    pilhaAux->topo = topoAux;
     descarregaPilhaAuxiliarNaPilha(pilhaAux, pilha);
 }
 
 void localizaItemPosicao(int posicao, TipoPilha* pilha)
 {
     if(isVazia(pilha)) return;
-    char *shouldChange = nullptr;
-    auto* pilhaAux = carregaPilhaAuxiliarAtePosicao(posicao, pilha);
-    cout << "O valor na posição " + to_string(posicao) + " é " + pilha->item[pilha->topo].chave;
-    cout << "Deseja alterar o valor (s/n)?" << endl;
-    cin >> *shouldChange;
+    string shouldChange = "n";
+    TipoPilha* pilhaAux = carregaPilhaAuxiliarAtePosicao(posicao+1, pilha);
+    int topoAux = pilhaAux->topo;
+    cout << "O valor na posição " + to_string(posicao) + " é " + pilha->item[pilha->topo].chave << endl;
+    cout << "Deseja alterar o valor (s/n)? ";
+    // cin >> shouldChange;
     if (shouldChange == "s")
     {
         string novoValor;
@@ -127,6 +131,7 @@ void localizaItemPosicao(int posicao, TipoPilha* pilha)
         desempilhar(pilha);
         empilhar(novoValor, pilha);
     }
+    pilhaAux->topo = topoAux;
     descarregaPilhaAuxiliarNaPilha(pilhaAux, pilha);
 }
 
@@ -137,27 +142,38 @@ TipoPilha combinarPilhas(TipoPilha* pilhaUm, TipoPilha* pilhaDois)
     {
         cout << "ERRO! As combinação das pilhas excede o tamanho máximo!" << endl;
     }
-    TipoPilha* novaPilha = carregaPilhaAuxiliarAtePosicao(pilhaUm->topo, pilhaUm);
-    return *carregaPilhaAuxiliarAtePosicao(pilhaDois->topo, pilhaDois, novaPilha);
+    TipoPilha  novaPilha;
+    inicializaPilha(&novaPilha);
+    carregaPilhaAuxiliarAtePosicao(0, pilhaUm, &novaPilha);
+    carregaPilhaAuxiliarAtePosicao(0, pilhaDois, &novaPilha);
+    return  novaPilha;
 }
 
-TipoPilha* dividirPilha(TipoPilha* original, int posicao)
+TipoPilha dividirPilha(TipoPilha* original, int posicao)
 {
-    if(isVazia(original)) return nullptr;
-    return carregaPilhaAuxiliarAtePosicao(posicao, original);
+    TipoPilha novaPilha;
+    inicializaPilha(&novaPilha);
+    if(isVazia(original)) return novaPilha;
+    carregaPilhaAuxiliarAtePosicao(posicao + 1, original, &novaPilha);
+    return novaPilha;
 }
 
 TipoPilha copiarPilha(TipoPilha* original)
 {
-    TipoPilha* pilhaAux = carregaPilhaAuxiliarAtePosicao(original->topo, original);
-    auto* copia = new TipoPilha;
-    for (int i = pilhaAux->topo; i > 0; i--)
+    TipoPilha pilhaAux;
+    inicializaPilha(&pilhaAux);
+    carregaPilhaAuxiliarAtePosicao(0, original, &pilhaAux);
+    int topoAux = pilhaAux.topo;
+    TipoPilha copia;
+    inicializaPilha(&copia);
+    pilhaAux.topo = topoAux;
+    for (int i = pilhaAux.topo; i >= 0; i--)
     {
-        empilhar(pilhaAux->item[i].chave, original);
-        empilhar(pilhaAux->item[i].chave, copia);
-        desempilhar(pilhaAux);
+        empilhar(pilhaAux.item[i].chave, original);
+        empilhar(pilhaAux.item[i].chave, &copia);
+        desempilhar(&pilhaAux);
     }
-    return *copia;
+    return copia;
 }
 
 void localizaItemPosicao(TipoPilha* pilha, const string& valorBuscado)
